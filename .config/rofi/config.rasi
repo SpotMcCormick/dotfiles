@@ -1,0 +1,6 @@
+@theme "/usr/share/rofi/themes/material.rasi"
+
+window {
+    location: center;
+    anchor: center;
+}

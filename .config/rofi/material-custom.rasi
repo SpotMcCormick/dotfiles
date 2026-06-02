@@ -1,0 +1,73 @@
+* {
+    base00: #263238;
+    base01: #2E3C43;
+    base03: #546E7A;
+    base07: #FFFFFF;
+    base0D: #82AAFF;
+
+    spacing: 0;
+    background-color: transparent;
+}
+
+window {
+    transparency: "real";
+    background-color: #263238BB;
+    border-radius: 14px;
+    width: 55%;
+
+    location: center;
+    anchor: center;
+    x-offset: 0;
+    y-offset: 0;
+}
+mainbox {
+    children: [inputbar, listview];
+    spacing: 14px;
+    padding: 18px;
+    border: 1px;
+    border-color: #FFFFFF22;
+}
+
+inputbar {
+    padding: 10px 14px;
+    background-color: #FFFFFF10;
+    border-radius: 10px;
+    children: [prompt, entry];
+}
+
+prompt {
+    text-color: @base0D;
+    str: "run";
+    margin: 0 10px 0 0;
+}
+
+entry {
+    text-color: @base07;
+}
+
+listview {
+    lines: 8;
+    scrollbar: false;
+    margin: 0;
+}
+
+element {
+    padding: 8px 10px;
+    spacing: 8px;
+    border-radius: 10px;
+    children: [element-icon, element-text];
+}
+
+element normal {
+    background-color: transparent;
+}
+
+element selected {
+    background-color: #FFFFFF18;
+}
+
+element-text,
+element-icon {
+    background-color: inherit;
+    text-color: @base07;
+}
