@@ -7,6 +7,8 @@ evdi-dkms-debug
 redhat-fonts
 sddm-silent-theme
 sddm-theme-tokyo-night-git
+way-displays
+way-displays-debug
 wlogout
 wlogout-debug
 yay
