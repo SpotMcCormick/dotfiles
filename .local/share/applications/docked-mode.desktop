@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Docked Mode
+Comment=Switch to Dell monitor only
+Exec=docked
+Type=Application
+Terminal=false
+Categories=System;
