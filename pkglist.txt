@@ -32,6 +32,7 @@ imagemagick
 intel-media-driver
 intel-ucode
 iwd
+jq
 kitty
 less
 libinput-tools
