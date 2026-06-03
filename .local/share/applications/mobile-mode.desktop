@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Mobile Mode
+Comment=Switch to laptop display
+Exec=mobile
+Type=Application
+Terminal=false
+Categories=System;
