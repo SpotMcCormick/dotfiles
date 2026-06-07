@@ -1,5 +1,6 @@
 bibata-cursor-theme-bin
 brave-bin
+di-debug
 displaylink
 displaylink-debug
 evdi-dkms
