@@ -34,6 +34,7 @@ intel-media-driver
 intel-ucode
 iwd
 jq
+kdenlive
 kitty
 less
 libinput-tools
@@ -52,6 +53,7 @@ nvidia-open
 nvidia-settings
 nvidia-utils
 nwg-look
+obs-studio
 papirus-icon-theme
 pavucontrol
 pipewire
@@ -68,6 +70,7 @@ sddm-silent-theme
 sddm-theme-tokyo-night-git
 slurp
 smartmontools
+socat
 sof-firmware
 spotify-launcher
 sudo
@@ -107,5 +110,4 @@ xorg-server
 xorg-xinit
 xournalpp
 yay
-yay-debug
 zram-generator
