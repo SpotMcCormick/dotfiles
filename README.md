@@ -1,34 +1,30 @@
-# Jeremy's Arch Hyprland Dotfiles
+# Jeremy's Arch Hyprland Workstation
 
 Personal Arch Linux workstation configuration for a Lenovo ThinkPad P1 Gen 4.
 
-## Hardware
-
-* Lenovo ThinkPad P1 Gen 4
-* Intel UHD Graphics
-* NVIDIA RTX A2000 Mobile
-* Dell P2722H Monitor
-* Logitech MX Master Mouse
-* Lofree Flow Keyboard
-
-## Included Configuration
-
-* Hyprland
-* Waybar
-* Kitty
-* Rofi
-* Hyprlock
-* Hyprpaper
-* Thunderbolt / Docked Display Support
-* NVIDIA Open Driver Configuration
-* Silent SDDM Theme
-* JetBrains Mono Nerd Font
-* Tux Tron Wallpaper
-* Package Lists
+This repository contains the configuration required to rebuild my daily-driver workstation after a reinstall, SSD failure, or migration to new hardware.
 
 ---
 
-## Repository Structure
+# Hardware
+
+## Laptop
+
+* Lenovo ThinkPad P1 Gen 4
+* Intel UHD Graphics
+* NVIDIA RTX A2000 Laptop GPU
+* 48 GB RAM
+
+## Peripherals
+
+* Dell P2722H Monitor
+* Logitech MX Master Mouse
+* Lofree Flow Keyboard
+* USB-C Dock
+
+---
+
+# Repository Contents
 
 ```text
 .config/
@@ -36,98 +32,153 @@ Personal Arch Linux workstation configuration for a Lenovo ThinkPad P1 Gen 4.
 ├── waybar
 ├── kitty
 ├── rofi
+├── dunst
 
-system/
-├── mkinitcpio
-├── modprobe
+sddm/
+├── sddm.conf
+└── silent-default.conf
 
 scripts/
 ├── docked.sh
-├── mobile.sh
+└── mobile.sh
+
+system/
 
 wallpapers/
 
 pkglist.txt
 aurlist.txt
+
+README.md
 NVIDIA.md
 ```
 
 ---
 
-## Restore After Fresh Install
+# Fresh Arch Install
 
-### Clone Repository
-
-```bash
-git clone git@github.com:SpotMcCormick/dotfiles.git
-cd dotfiles
-```
-
-### Install Official Packages
+## Update System
 
 ```bash
 sudo pacman -Syu
+```
 
+---
+
+## Install Git
+
+```bash
+sudo pacman -S git
+```
+
+---
+
+## Clone Repository
+
+```bash
+git clone git@github.com:SpotMcCormick/dotfiles.git
+
+cd dotfiles
+```
+
+---
+
+# Install Packages
+
+## Official Repository Packages
+
+```bash
 sudo pacman -S --needed - < pkglist.txt
 ```
 
-### Install AUR Packages
+## Install yay
 
 ```bash
+sudo pacman -S --needed base-devel git
+
+git clone https://aur.archlinux.org/yay.git
+
+cd yay
+
+makepkg -si
+```
+
+## AUR Packages
+
+```bash
+cd ~/dotfiles
+
 yay -S --needed - < aurlist.txt
 ```
 
 ---
 
-## Restore Configuration Files
+# Restore Configuration Files
 
 ```bash
 mkdir -p ~/.config
+```
 
+```bash
 cp -r .config/hypr ~/.config/
 cp -r .config/waybar ~/.config/
 cp -r .config/kitty ~/.config/
 cp -r .config/rofi ~/.config/
+cp -r .config/dunst ~/.config/
 ```
 
 ---
 
-## Restore Wallpaper
+# Restore Wallpaper
 
 ```bash
 mkdir -p ~/Pictures/desktop_wallpaper
+```
 
+```bash
 cp wallpapers/tux_tron.png \
 ~/Pictures/desktop_wallpaper/
 ```
 
 ---
 
-## NVIDIA / Dock Configuration
+# Restore SDDM Theme
 
-### Hardware Layout
-
-Internal laptop display:
-
-```text
-eDP-1 → Intel GPU
-```
-
-External dock display:
-
-```text
-DP-* → NVIDIA GPU
-```
-
-### Required Packages
+Restore login manager configuration:
 
 ```bash
-sudo pacman -S nvidia-open nvidia-utils nvidia-settings
+sudo cp sddm/sddm.conf /etc/sddm.conf
 ```
 
-### Disable Nouveau
+```bash
+sudo cp sddm/silent-default.conf \
+    /usr/share/sddm/themes/silent/configs/default.conf
+```
 
-File:
+---
+
+# NVIDIA Configuration
+
+Install drivers:
+
+```bash
+sudo pacman -S \
+    nvidia-open \
+    nvidia-utils \
+    nvidia-settings
+```
+
+Verify:
+
+```bash
+nvidia-smi
+```
+
+---
+
+# Disable Nouveau
+
+Create:
 
 ```text
 /etc/modprobe.d/blacklist-nouveau.conf
@@ -140,9 +191,11 @@ blacklist nouveau
 options nouveau modeset=0
 ```
 
-### Enable NVIDIA DRM
+---
 
-File:
+# Enable NVIDIA DRM
+
+Create:
 
 ```text
 /etc/modprobe.d/nvidia.conf
@@ -154,9 +207,11 @@ Contents:
 options nvidia_drm modeset=1
 ```
 
-### mkinitcpio
+---
 
-File:
+# mkinitcpio
+
+Edit:
 
 ```text
 /etc/mkinitcpio.conf
@@ -168,123 +223,95 @@ Required:
 MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
 ```
 
-Rebuild initramfs:
+Rebuild:
 
 ```bash
 sudo mkinitcpio -P
 ```
 
-Reboot:
-
-```bash
-sudo reboot
-```
-
-### Verify
-
-```bash
-nvidia-smi
-```
-
-```bash
-lsmod | grep -E 'nouveau|nvidia'
-```
-
-Expected:
-
-* NVIDIA modules loaded
-* Nouveau not loaded
-
 ---
 
-## Display Modes
+# Docked Mode
 
-### Docked Mode
-
-Dell monitor only:
+Disable laptop panel:
 
 ```bash
 ~/dotfiles/scripts/docked.sh
 ```
 
-or
+Or:
 
 ```bash
 hyprctl keyword monitor "eDP-1,disable"
 ```
 
-### Mobile Mode
+---
 
-Laptop display only:
+# Mobile Mode
+
+Enable laptop panel:
 
 ```bash
 ~/dotfiles/scripts/mobile.sh
 ```
 
-or
+Or:
 
 ```bash
 hyprctl keyword monitor "eDP-1,preferred,auto,1.6"
 ```
 
-### Rofi Launchers
-
-Available from:
-
-```text
-Super + Space
-```
-
-Launch:
-
-* Docked Mode
-* Mobile Mode
-
 ---
 
-## Silent SDDM Theme
+# Verify System
 
-Restore configuration:
+## NVIDIA
 
 ```bash
-sudo cp sddm/default.conf \
-/usr/share/sddm/themes/silent/configs/
-
-sudo cp sddm/metadata.desktop \
-/usr/share/sddm/themes/silent/
+nvidia-smi
 ```
 
----
-
-## Reload Hyprland
+## Firmware
 
 ```bash
-hyprctl reload
+fwupdmgr get-devices
+```
+
+## Monitor Detection
+
+```bash
+hyprctl monitors
 ```
 
 ---
 
-## Keybindings
+# Weekly Maintenance
 
-| Key           | Action           |
-| ------------- | ---------------- |
-| Super + T     | Kitty            |
-| Super + B     | Brave            |
-| Super + C     | VS Code / Cursor |
-| Super + E     | Thunderbird      |
-| Super + F     | Thunar           |
-| Super + L     | Hyprlock         |
-| Super + M     | Spotify          |
-| Super + Q     | Close Window     |
-| Super + S     | Power Menu       |
-| Super + Space | Rofi             |
+Run:
+
+```bash
+sh ~/Documents/linux_commands/update_system_firmware.txt
+```
+
+This:
+
+* Updates firmware
+* Updates Arch packages
+* Updates AUR packages
+* Exports package inventories
+* Copies configuration backups
+* Copies SDDM configuration
+* Pushes updates to GitHub
 
 ---
 
-## Notes
+# Notes
 
-* USB-C dock display output requires NVIDIA drivers.
-* NVIDIA Open Kernel Modules are used.
-* Mobile and Docked monitor profiles are available through Rofi launchers.
-* JetBrains Mono Nerd Font is used throughout the system.
-* Package lists are stored for rebuilding the workstation.
+* USB-C dock display output uses NVIDIA.
+* Hyprland is the primary desktop environment.
+* Waybar provides status bar configuration.
+* Rofi provides application launcher.
+* Kitty is the terminal emulator.
+* SDDM uses the Silent theme.
+* Package inventories are stored in pkglist.txt and aurlist.txt.
+* Repository is intended as a full workstation recovery backup.
