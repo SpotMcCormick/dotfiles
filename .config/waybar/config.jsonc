@@ -34,10 +34,23 @@
     "format": "RAM {}%"
   },
 
-  "pulseaudio": {
+"pulseaudio": {
     "format": "{icon} {volume}%",
-    "format-icons": ["", "", ""]
- },
+    "format-muted": " Muted",
+    "max-volume" :150,
+    "scroll-step": 3,
+    "format-icons": {
+        "headphone": "",
+        "hands-free": "",
+        "headset": "",
+        "phone": "",
+        "portable": "",
+        "car": "",
+        "default": ["", "", ""]
+    },
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "on-click-right": "pavucontrol"
+},
 
 "battery": {
     "bat": "BAT0",
