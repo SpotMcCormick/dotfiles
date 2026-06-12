@@ -54,6 +54,8 @@ nvidia-settings
 nvidia-utils
 nwg-look
 obs-studio
+ollama
+ollama-cuda
 papirus-icon-theme
 pavucontrol
 pipewire
