@@ -17,6 +17,7 @@ discord
 displaylink
 dunst
 efibootmgr
+exfatprogs
 fastfetch
 fwupd
 git
@@ -49,6 +50,7 @@ nano
 network-manager-applet
 networkmanager
 noto-fonts
+ntfs-3g
 nvidia-open
 nvidia-settings
 nvidia-utils
