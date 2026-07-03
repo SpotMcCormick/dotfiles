@@ -34,29 +34,42 @@
     "format": "RAM {}%"
   },
 
-"pulseaudio": {
+  "pulseaudio": {
     "format": "{icon} {volume}%",
     "format-muted": " Muted",
-    "max-volume" :150,
+    "max-volume": 150,
     "scroll-step": 3,
     "format-icons": {
-        "headphone": "",
-        "hands-free": "",
-        "headset": "",
-        "phone": "",
-        "portable": "",
-        "car": "",
-        "default": ["", "", ""]
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", "", ""]
     },
     "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
     "on-click-right": "pavucontrol"
-},
+  },
 
-"battery": {
+  "battery": {
     "bat": "BAT0",
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
     "format": "{icon} {capacity}%",
-    "format-icons": ["", "", "", "", ""]
-},
+    "format-charging": " {capacity}%",
+    "format-plugged": " {capacity}%",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+
   "tray": {
     "spacing": 8
   }
