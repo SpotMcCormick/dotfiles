@@ -25,11 +25,13 @@ github-cli
 grim
 gst-plugin-pipewire
 gvfs
+gvfs-afc
 gvfs-smb
 htop
 hyprland
 hyprlock
 hyprpaper
+ifuse
 imagemagick
 intel-media-driver
 intel-ucode
@@ -87,6 +89,7 @@ timeshift
 tmux
 tree
 ttf-jetbrains-mono-nerd
+usbmuxd
 usbutils
 uwsm
 vim
