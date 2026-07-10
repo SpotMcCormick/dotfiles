@@ -46,29 +46,35 @@
       "phone": "",
       "portable": "",
       "car": "",
-      "default": ["", "", ""]
+      "default": [
+        "",
+        "",
+        ""
+      ]
     },
     "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
     "on-click-right": "pavucontrol"
   },
 
-  "battery": {
-    "bat": "BAT0",
-    "states": {
-      "warning": 30,
-      "critical": 15
-    },
-    "format": "{icon} {capacity}%",
-    "format-charging": " {capacity}%",
-    "format-plugged": " {capacity}%",
-    "format-icons": [
-      "",
-      "",
-      "",
-      "",
-      ""
-    ]
+"battery": {
+  "bat": "BAT0",
+  "states": {
+    "warning": 30,
+    "critical": 15
   },
+  "format": "{icon} {capacity}%",
+  "format-charging": " {capacity}%",
+  "format-plugged": " {capacity}%",
+  "format-icons": [
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "on-click": "~/.config/waybar/scripts/battery-toggle.sh"
+},
+
 
   "tray": {
     "spacing": 8
