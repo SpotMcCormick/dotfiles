@@ -1,14 +1,9 @@
 bibata-cursor-theme-bin
 brave-bin
-di-debug
 displaylink
-displaylink-debug
 evdi-dkms
-evdi-dkms-debug
 redhat-fonts
 sddm-silent-theme
 sddm-theme-tokyo-night-git
 wlogout
-wlogout-debug
 yay
-yay-debug

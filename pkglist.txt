@@ -19,6 +19,7 @@ dunst
 efibootmgr
 exfatprogs
 fastfetch
+foliate
 fwupd
 git
 github-cli
@@ -37,7 +38,6 @@ intel-media-driver
 intel-ucode
 iwd
 jq
-kdenlive
 kitty
 less
 libinput-tools
@@ -49,6 +49,7 @@ linux-firmware
 linux-headers
 mesa-utils
 nano
+ncdu
 network-manager-applet
 networkmanager
 noto-fonts
