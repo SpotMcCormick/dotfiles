@@ -69,6 +69,8 @@ pipewire-jack
 pipewire-pulse
 polkit-kde-agent
 power-profiles-daemon
+python-pip
+python-pipx
 qt5-wayland
 qt6-wayland
 rofi
