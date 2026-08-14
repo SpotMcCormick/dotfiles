@@ -15,6 +15,7 @@ cups
 cups-pk-helper
 discord
 displaylink
+dmidecode
 dunst
 efibootmgr
 exfatprogs
