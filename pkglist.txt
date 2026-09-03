@@ -3,6 +3,8 @@ aws-cli
 base
 base-devel
 bibata-cursor-theme-bin
+blueferry-backend
+blueferry-gtk
 blueman
 bluez
 bluez-utils
@@ -20,6 +22,7 @@ dunst
 efibootmgr
 exfatprogs
 fastfetch
+featherpad
 foliate
 fwupd
 git
@@ -40,6 +43,7 @@ intel-ucode
 iwd
 jq
 kitty
+kvantum
 less
 libinput-tools
 libpulse
@@ -49,11 +53,13 @@ linux
 linux-firmware
 linux-headers
 mesa-utils
+musescore
 nano
 ncdu
 network-manager-applet
 networkmanager
 noto-fonts
+noto-fonts-emoji
 ntfs-3g
 nvidia-open
 nvidia-settings
