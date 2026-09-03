@@ -1,4 +1,6 @@
 bibata-cursor-theme-bin
+blueferry-backend
+blueferry-gtk
 brave-bin
 displaylink
 evdi-dkms
