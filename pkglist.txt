@@ -1,4 +1,5 @@
 adw-gtk-theme
+archlinux-wallpaper
 aws-cli
 base
 base-devel
@@ -93,12 +94,15 @@ sudo
 swaync
 system-config-printer
 tailscale
+task
+taskwarrior-tui
 thunar
 thunderbird
 timeshift
 tmux
 tree
 ttf-jetbrains-mono-nerd
+unixodbc
 unzip
 usbmuxd
 usbutils
