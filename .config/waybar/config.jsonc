@@ -21,10 +21,9 @@
   "hyprland/workspaces": {
     "format": "{name}"
   },
-
-  "clock": {
-    "format": "{:%A, %B %d, %Y  %I:%M %p}"
-  },
+"clock": {
+  "format": "{:%a %m/%d/%y %I:%M %p}"
+},
 
   "cpu": {
     "format": "CPU {usage}%"
