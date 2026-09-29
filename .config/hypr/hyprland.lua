@@ -34,6 +34,9 @@ end)
 ---- LOOK AND FEEL ----
 -----------------------
 hl.config({
+	 xwayland = {
+        force_zero_scaling = true,
+    },
     decoration = {
         rounding = 12,
         active_opacity = 0.85,
