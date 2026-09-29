@@ -23,6 +23,7 @@ efibootmgr
 exfatprogs
 fastfetch
 featherpad
+flatpak
 foliate
 fwupd
 git
@@ -53,7 +54,6 @@ linux
 linux-firmware
 linux-headers
 mesa-utils
-musescore
 nano
 ncdu
 network-manager-applet
