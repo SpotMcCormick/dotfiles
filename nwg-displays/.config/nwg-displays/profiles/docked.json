@@ -1,0 +1,49 @@
+{
+  "displays": [
+    {
+      "name": "eDP-1",
+      "description": "BOE 0x09BA",
+      "x": 0,
+      "y": 0,
+      "physical_width": 2560,
+      "physical_height": 1600,
+      "transform": "normal",
+      "scale": 1.6,
+      "scale_filter": null,
+      "refresh": 60.0,
+      "dpms": true,
+      "adaptive_sync": false,
+      "custom_mode": false,
+      "mirror": "",
+      "ten_bit": false,
+      "active": true
+    },
+    {
+      "name": "HDMI-A-2",
+      "description": "Dell Inc. DELL P2722H 2SM8DJ3",
+      "x": 1600,
+      "y": 0,
+      "physical_width": 1920,
+      "physical_height": 1080,
+      "transform": "normal",
+      "scale": 1.0,
+      "scale_filter": null,
+      "refresh": 60.0,
+      "dpms": true,
+      "adaptive_sync": false,
+      "custom_mode": false,
+      "mirror": "eDP-1",
+      "ten_bit": false,
+      "active": true
+    }
+  ],
+  "config": {
+    "view-scale": 0.15,
+    "snap-threshold": 10,
+    "indicator-timeout": 500,
+    "custom-mode": [],
+    "use-desc": true,
+    "confirm-timeout": 10,
+    "profile-bound-wallpapers": true
+  }
+}
