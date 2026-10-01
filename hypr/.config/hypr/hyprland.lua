@@ -34,7 +34,7 @@ end)
 ---- LOOK AND FEEL ----
 -----------------------
 hl.config({
-	 xwayland = {
+    xwayland = {
         force_zero_scaling = true,
     },
     decoration = {
@@ -47,12 +47,12 @@ hl.config({
             passes = 1,
         },
     },
+
     misc = {
         disable_hyprland_logo = true,
         disable_splash_rendering = true,
     },
 })
-
 ---------------------
 ---- KEYBINDINGS ----
 ---------------------
@@ -122,3 +122,6 @@ hl.bind("mouse:276", hl.dsp.exec_cmd("wtype -M ctrl c -m ctrl"))
 
 -- Lid close -> lock
 hl.bind("switch:on:Lid Switch", hl.dsp.exec_cmd("hyprlock --immediate"), { locked = true })
+
+--waybar toggle
+hl.bind("SUPER + SHIFT + B", hl.dsp.exec_cmd("pkill -SIGUSR1 waybar"))
