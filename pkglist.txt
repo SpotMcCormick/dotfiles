@@ -18,7 +18,6 @@ cups
 cups-pk-helper
 displaylink
 dmidecode
-dunst
 efibootmgr
 exfatprogs
 fastfetch
@@ -68,6 +67,7 @@ nwg-look
 obs-studio
 ollama
 ollama-cuda
+pacman-contrib
 papirus-icon-theme
 pavucontrol
 pipewire
@@ -90,6 +90,7 @@ smartmontools
 socat
 sof-firmware
 spotify-launcher
+stow
 sudo
 swaync
 system-config-printer
