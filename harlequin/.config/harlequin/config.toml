@@ -1,0 +1,16 @@
+[profiles.clickhouse_dev]
+adapter = "clickhouse"
+theme = "tokyo-night"
+host = "100.86.137.67"
+port = 9000
+user = "${CLICKHOUSE_USER}"
+password = "${CLICKHOUSE_PASSWORD}"
+
+[profiles.postgres_dev]
+adapter = "postgres"
+theme = "tokyo-night"
+host = "100.86.137.67"
+port = 5432
+user = "${POSTGRES_USER}"
+password = "${POSTGRES_PASSWORD}"
+dbname = "test_db"
