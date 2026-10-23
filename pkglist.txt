@@ -94,6 +94,8 @@ python-psycopg2
 qt5-wayland
 qt6-wayland
 rofi
+ruby
+ruby-erb
 sddm
 sddm-silent-theme
 sddm-theme-tokyo-night-git

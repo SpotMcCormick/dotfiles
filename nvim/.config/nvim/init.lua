@@ -797,6 +797,8 @@ do
     -- clangd = {},
     -- gopls = {},
     pyright = {},
+    html = {},
+    emmet_language_server = {},
     -- tsc = {},
     --
     -- Some languages (like rust) have entire language plugins that can be useful:
