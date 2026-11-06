@@ -1,0 +1,9 @@
+[open]
+prepend_rules = [
+    { mime = "text/csv", use = "csv" }
+]
+
+[opener]
+csv = [
+    { run = 'libreoffice --calc "$@"', orphan = true, desc = "LibreOffice Calc" }
+]

@@ -58,7 +58,6 @@ linux
 linux-firmware
 linux-headers
 mesa-utils
-micro
 nano
 ncdu
 neovim
