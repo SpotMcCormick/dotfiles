@@ -13,7 +13,7 @@ require("workspaces")
 ---------------------
 local mainMod = "SUPER"
 local terminal = "kitty"
-local fileManager = "thunar"
+local fileManager = "yazi -e"
 local menu = "rofi -show run"
 
 -------------------------------
@@ -89,7 +89,7 @@ hl.animation({ leaf = "borderangle", enabled = false })
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("spotify-launcher"))
-hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(fileManager))
+hl.bind(mainMod .. " + F", hl.dsp.exec_cmd("kitty yazi"))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("rofi -show drun"))
