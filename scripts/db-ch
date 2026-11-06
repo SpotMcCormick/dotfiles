@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+export CLICKHOUSE_HOST=SERVER_IP
+exec harlequin -P clickhouse_dev

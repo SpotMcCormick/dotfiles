@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+export POSTGRES_HOST=SERVER_IP
+exec harlequin -P postgres_dev

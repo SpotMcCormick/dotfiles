@@ -1,113 +1,184 @@
 # Dotfiles: Arch + Hyprland
 
-Clean-install guide for a new Arch machine. Run the steps in order.
+Run these in order on a fresh Arch install.
 
-## 1. Base setup
+## 1. Update and install the basics
+
+Update the system:
 
 ```bash
 sudo pacman -Syu
-sudo pacman -S --needed git base-devel stow flatpak
 ```
 
-Clone the repo into your home folder, so it ends up at `~/dotfiles`. It has to be there, because stow links relative to the parent folder:
+Install git (to download this repo), stow (to link configs), base-devel (needed to build AUR packages), flatpak, and pciutils (to check the GPU):
+
+```bash
+sudo pacman -S --needed git base-devel stow flatpak pciutils
+```
+
+## 2. Get the repo
+
+Clone it into your home folder. It must end up at `~/dotfiles` or stow will link to the wrong place:
 
 ```bash
 cd ~
 git clone https://github.com/SpotMcCormick/dotfiles.git
-cd ~/dotfiles
+cd dotfiles
 ```
 
-## 2. Install packages
+## 3. Check for an NVIDIA GPU
+
+```bash
+lspci | grep -i nvidia
+```
+
+- It prints a line: do **4a**.
+- It prints nothing: do **4b**.
+
+Do only one of them, then continue with step 5.
+
+## 4a. If you have an NVIDIA GPU
+
+Install everything on the package list:
 
 ```bash
 sudo pacman -S --needed - < pkglist.txt
 ```
 
-If the new machine has no NVIDIA GPU, delete the `nvidia*` lines from `pkglist.txt` first.
+Install the NVIDIA driver:
 
-Install yay, then the AUR packages:
+```bash
+sudo pacman -S --needed nvidia-open nvidia-utils nvidia-settings
+```
+
+Disable the open-source nouveau driver and turn on the setting Hyprland needs:
+
+```bash
+sudo cp system/modprobe/*.conf /etc/modprobe.d/
+```
+
+Load the NVIDIA modules at boot. Open the file and set the `MODULES` line to `MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)`:
+
+```bash
+sudo nano /etc/mkinitcpio.conf
+```
+
+Rebuild the boot image:
+
+```bash
+sudo mkinitcpio -P
+```
+
+Now go to step 5.
+
+## 4b. If you do NOT have an NVIDIA GPU
+
+Install everything on the package list except the NVIDIA packages:
+
+```bash
+grep -vi nvidia pkglist.txt | sudo pacman -S --needed -
+```
+
+Now go to step 5.
+
+## 5. Install AUR and Flatpak apps
+
+Install yay, a helper for the AUR (community packages):
 
 ```bash
 git clone https://aur.archlinux.org/yay.git /tmp/yay
-cd /tmp/yay && makepkg -si
+cd /tmp/yay
+makepkg -si
 cd ~/dotfiles
+```
+
+Install everything from the AUR:
+
+```bash
 yay -S --needed - < aurlist.txt
 ```
 
-`displaylink` and `evdi-dkms` are only for the USB-C dock. Skip them if you don't need it.
-
-Flatpaks:
+Add the Flathub store, then install the Flatpak apps:
 
 ```bash
-flatpak install flathub $(cat flatpaklist.txt)
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install -y flathub $(cat flatpaklist.txt)
+```
+
+Restore the Flatpak permission tweaks:
+
+```bash
 mkdir -p ~/.local/share/flatpak/overrides
 cp flatpak/overrides/* ~/.local/share/flatpak/overrides/
 ```
 
-## 3. Link configs with stow
+## 6. Link the configs
 
-Fresh installs may already have default configs that block stow. Remove them first:
+Remove any default configs the fresh install created. Stow won't link over them:
 
 ```bash
-rm -rf ~/.config/kitty ~/.config/rofi ~/.config/waybar ~/.config/yazi ~/.config/nvim ~/.config/hypr
+rm -rf ~/.config/{hypr,kitty,rofi,waybar,yazi,nvim,nwg-look,nwg-displays,harlequin}
 ```
 
-Then:
+Stow creates symlinks in `~/.config` that point back into `~/dotfiles`, so edits in either place stay in sync:
 
 ```bash
-cd ~/dotfiles
 stow hypr kitty rofi waybar yazi nvim nwg-look nwg-displays harlequin
 ```
 
-Hyprland expects `monitors.lua` and `workspaces.lua`, which `nwg-displays` generates. If Hyprland complains they are missing, open `nwg-displays` and click Apply.
+## 7. Install the scripts and database settings
 
-## 4. Scripts
-
-Hyprland calls these from `~/.local/bin`:
+Hyprland runs these scripts from `~/.local/bin`:
 
 ```bash
 mkdir -p ~/.local/bin
-cp scripts/docked.sh ~/.local/bin/docked
-cp scripts/mobile.sh ~/.local/bin/mobile
-chmod +x ~/.local/bin/docked ~/.local/bin/mobile
+cp scripts/* ~/.local/bin/
+chmod +x ~/.local/bin/*
 ```
 
-They disable and enable the laptop screen (`eDP-1`). Check the monitor name with `hyprctl monitors` on a new machine and edit the scripts if it differs.
+Harlequin reads its database logins from environment variables. Put them all in one file that the `db-ch` and `db-pg` scripts load. Open it:
 
-## 5. Login screen (SDDM)
+```bash
+nano ~/.config/db.env
+```
+
+Paste this and fill in your own values:
+
+```bash
+export CLICKHOUSE_HOST=
+export CLICKHOUSE_USER=
+export CLICKHOUSE_PASSWORD=
+export POSTGRES_HOST=
+export POSTGRES_USER=
+export POSTGRES_PASSWORD=
+```
+
+The file holds passwords, so make it readable only by you:
+
+```bash
+chmod 600 ~/.config/db.env
+```
+
+## 8. Login screen (SDDM)
+
+Copy the SDDM settings and the theme config:
 
 ```bash
 sudo cp sddm/sddm.conf /etc/sddm.conf
 sudo cp sddm/silent-default.conf /usr/share/sddm/themes/silent/configs/default.conf
+```
+
+Copy the login background into the theme, then make SDDM start at boot:
+
+```bash
+sudo cp /usr/share/backgrounds/archlinux/split.png /usr/share/sddm/themes/silent/backgrounds/
 sudo systemctl enable sddm
 ```
 
-## 6. Reboot
+## 9. Reboot
 
 ```bash
 reboot
 ```
 
-## Optional: SharedHome network drive
-
-Create the credentials file (root only):
-
-```bash
-sudo mkdir -p /etc/samba
-sudo nano /etc/samba/credentials     # username=... / password=... / domain=WORKGROUP
-sudo chmod 600 /etc/samba/credentials
-mkdir ~/SharedHome
-```
-
-Add this line to `/etc/fstab`, replacing `SERVER_IP` with the server's address (your Tailscale IP):
-
-```
-//SERVER_IP/sharedhome  /home/spotmccormick/SharedHome  cifs  credentials=/etc/samba/credentials,uid=1000,gid=1000,iocharset=utf8,_netdev,nofail,x-systemd.automount,x-systemd.idle-timeout=60,x-systemd.requires=tailscaled.service  0  0
-```
-
-Needs `cifs-utils` and Tailscale. Start it with:
-
-```bash
-sudo systemctl daemon-reload
-sudo systemctl start home-spotmccormick-SharedHome.automount
-```
+If Hyprland complains about `monitors.lua`, open `nwg-displays` and click Apply.
