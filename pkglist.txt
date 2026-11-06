@@ -14,7 +14,6 @@ brave-bin
 brightnessctl
 btop
 clickhouse-client-bin
-code
 cups
 cups-pk-helper
 dbeaver
@@ -24,7 +23,6 @@ efibootmgr
 exfatprogs
 fastfetch
 fd
-featherpad
 flatpak
 foliate
 fwupd
