@@ -1,317 +1,113 @@
-# Jeremy's Arch Hyprland Workstation
+# Dotfiles: Arch + Hyprland
 
-Personal Arch Linux workstation configuration for a Lenovo ThinkPad P1 Gen 4.
+Clean-install guide for a new Arch machine. Run the steps in order.
 
-This repository contains the configuration required to rebuild my daily-driver workstation after a reinstall, SSD failure, or migration to new hardware.
-
----
-
-# Hardware
-
-## Laptop
-
-* Lenovo ThinkPad P1 Gen 4
-* Intel UHD Graphics
-* NVIDIA RTX A2000 Laptop GPU
-* 48 GB RAM
-
-## Peripherals
-
-* Dell P2722H Monitor
-* Logitech MX Master Mouse
-* Lofree Flow Keyboard
-* USB-C Dock
-
----
-
-# Repository Contents
-
-```text
-.config/
-├── hypr
-├── waybar
-├── kitty
-├── rofi
-├── dunst
-
-sddm/
-├── sddm.conf
-└── silent-default.conf
-
-scripts/
-├── docked.sh
-└── mobile.sh
-
-system/
-
-wallpapers/
-
-pkglist.txt
-aurlist.txt
-
-README.md
-NVIDIA.md
-```
-
----
-
-# Fresh Arch Install
-
-## Update System
+## 1. Base setup
 
 ```bash
 sudo pacman -Syu
+sudo pacman -S --needed git base-devel stow flatpak
 ```
 
----
-
-## Install Git
+Clone the repo into your home folder, so it ends up at `~/dotfiles`. It has to be there, because stow links relative to the parent folder:
 
 ```bash
-sudo pacman -S git
+cd ~
+git clone https://github.com/SpotMcCormick/dotfiles.git
+cd ~/dotfiles
 ```
 
----
-
-## Clone Repository
-
-```bash
-git clone git@github.com:SpotMcCormick/dotfiles.git
-
-cd dotfiles
-```
-
----
-
-# Install Packages
-
-## Official Repository Packages
+## 2. Install packages
 
 ```bash
 sudo pacman -S --needed - < pkglist.txt
 ```
 
-## Install yay
+If the new machine has no NVIDIA GPU, delete the `nvidia*` lines from `pkglist.txt` first.
+
+Install yay, then the AUR packages:
 
 ```bash
-sudo pacman -S --needed base-devel git
-
-git clone https://aur.archlinux.org/yay.git
-
-cd yay
-
-makepkg -si
-```
-
-## AUR Packages
-
-```bash
+git clone https://aur.archlinux.org/yay.git /tmp/yay
+cd /tmp/yay && makepkg -si
 cd ~/dotfiles
-
 yay -S --needed - < aurlist.txt
 ```
 
----
+`displaylink` and `evdi-dkms` are only for the USB-C dock. Skip them if you don't need it.
 
-# Restore Configuration Files
-
-```bash
-mkdir -p ~/.config
-```
+Flatpaks:
 
 ```bash
-cp -r .config/hypr ~/.config/
-cp -r .config/waybar ~/.config/
-cp -r .config/kitty ~/.config/
-cp -r .config/rofi ~/.config/
-cp -r .config/dunst ~/.config/
+flatpak install flathub $(cat flatpaklist.txt)
+mkdir -p ~/.local/share/flatpak/overrides
+cp flatpak/overrides/* ~/.local/share/flatpak/overrides/
 ```
 
----
+## 3. Link configs with stow
 
-# Restore Wallpaper
+Fresh installs may already have default configs that block stow. Remove them first:
 
 ```bash
-mkdir -p ~/Pictures/desktop_wallpaper
+rm -rf ~/.config/kitty ~/.config/rofi ~/.config/waybar ~/.config/yazi ~/.config/nvim ~/.config/hypr
 ```
+
+Then:
 
 ```bash
-cp wallpapers/tux_tron.png \
-~/Pictures/desktop_wallpaper/
+cd ~/dotfiles
+stow hypr kitty rofi waybar yazi nvim nwg-look nwg-displays harlequin
 ```
 
----
+Hyprland expects `monitors.lua` and `workspaces.lua`, which `nwg-displays` generates. If Hyprland complains they are missing, open `nwg-displays` and click Apply.
 
-# Restore SDDM Theme
+## 4. Scripts
 
-Restore login manager configuration:
+Hyprland calls these from `~/.local/bin`:
+
+```bash
+mkdir -p ~/.local/bin
+cp scripts/docked.sh ~/.local/bin/docked
+cp scripts/mobile.sh ~/.local/bin/mobile
+chmod +x ~/.local/bin/docked ~/.local/bin/mobile
+```
+
+They disable and enable the laptop screen (`eDP-1`). Check the monitor name with `hyprctl monitors` on a new machine and edit the scripts if it differs.
+
+## 5. Login screen (SDDM)
 
 ```bash
 sudo cp sddm/sddm.conf /etc/sddm.conf
+sudo cp sddm/silent-default.conf /usr/share/sddm/themes/silent/configs/default.conf
+sudo systemctl enable sddm
 ```
+
+## 6. Reboot
 
 ```bash
-sudo cp sddm/silent-default.conf \
-    /usr/share/sddm/themes/silent/configs/default.conf
+reboot
 ```
 
----
+## Optional: SharedHome network drive
 
-# NVIDIA Configuration
-
-Install drivers:
+Create the credentials file (root only):
 
 ```bash
-sudo pacman -S \
-    nvidia-open \
-    nvidia-utils \
-    nvidia-settings
+sudo mkdir -p /etc/samba
+sudo nano /etc/samba/credentials     # username=... / password=... / domain=WORKGROUP
+sudo chmod 600 /etc/samba/credentials
+mkdir ~/SharedHome
 ```
 
-Verify:
+Add this line to `/etc/fstab`, replacing `SERVER_IP` with the server's address (your Tailscale IP):
+
+```
+//SERVER_IP/sharedhome  /home/spotmccormick/SharedHome  cifs  credentials=/etc/samba/credentials,uid=1000,gid=1000,iocharset=utf8,_netdev,nofail,x-systemd.automount,x-systemd.idle-timeout=60,x-systemd.requires=tailscaled.service  0  0
+```
+
+Needs `cifs-utils` and Tailscale. Start it with:
 
 ```bash
-nvidia-smi
+sudo systemctl daemon-reload
+sudo systemctl start home-spotmccormick-SharedHome.automount
 ```
-
----
-
-# Disable Nouveau
-
-Create:
-
-```text
-/etc/modprobe.d/blacklist-nouveau.conf
-```
-
-Contents:
-
-```text
-blacklist nouveau
-options nouveau modeset=0
-```
-
----
-
-# Enable NVIDIA DRM
-
-Create:
-
-```text
-/etc/modprobe.d/nvidia.conf
-```
-
-Contents:
-
-```text
-options nvidia_drm modeset=1
-```
-
----
-
-# mkinitcpio
-
-Edit:
-
-```text
-/etc/mkinitcpio.conf
-```
-
-Required:
-
-```text
-MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm)
-```
-
-Rebuild:
-
-```bash
-sudo mkinitcpio -P
-```
-
----
-
-# Docked Mode
-
-Disable laptop panel:
-
-```bash
-~/dotfiles/scripts/docked.sh
-```
-
-Or:
-
-```bash
-hyprctl keyword monitor "eDP-1,disable"
-```
-
----
-
-# Mobile Mode
-
-Enable laptop panel:
-
-```bash
-~/dotfiles/scripts/mobile.sh
-```
-
-Or:
-
-```bash
-hyprctl keyword monitor "eDP-1,preferred,auto,1.6"
-```
-
----
-
-# Verify System
-
-## NVIDIA
-
-```bash
-nvidia-smi
-```
-
-## Firmware
-
-```bash
-fwupdmgr get-devices
-```
-
-## Monitor Detection
-
-```bash
-hyprctl monitors
-```
-
----
-
-# Weekly Maintenance
-
-Run:
-
-```bash
-sh ~/Documents/linux_commands/update_system_firmware.txt
-```
-
-This:
-
-* Updates firmware
-* Updates Arch packages
-* Updates AUR packages
-* Exports package inventories
-* Copies configuration backups
-* Copies SDDM configuration
-* Pushes updates to GitHub
-
----
-
-# Notes
-
-* USB-C dock display output uses NVIDIA.
-* Hyprland is the primary desktop environment.
-* Waybar provides status bar configuration.
-* Rofi provides application launcher.
-* Kitty is the terminal emulator.
-* SDDM uses the Silent theme.
-* Package inventories are stored in pkglist.txt and aurlist.txt.
-* Repository is intended as a full workstation recovery backup.
