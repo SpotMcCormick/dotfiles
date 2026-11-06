@@ -53,6 +53,34 @@ hl.config({
         disable_splash_rendering = true,
     },
 })
+
+
+-------------------
+---- ANIMATIONS ----
+-------------------
+hl.curve("calm", { type = "bezier", points = { {0.25, 0.1}, {0.25, 1} } })
+
+-- Base for everything that isn't overridden below
+hl.animation({ leaf = "global", enabled = true, speed = 3, bezier = "calm" })
+
+-- Windows: quick, subtle open/close (no spring, minimal scaling)
+hl.animation({ leaf = "windows",    enabled = true, speed = 2.5, bezier = "calm", style = "popin 97%" })
+hl.animation({ leaf = "windowsMove", enabled = true, speed = 2,   bezier = "calm" })
+
+-- Workspaces: simple fade instead of sliding
+hl.animation({ leaf = "workspaces", enabled = true, speed = 2, bezier = "calm", style = "fade" })
+
+-- Fades and layers (waybar, rofi, etc.)
+hl.animation({ leaf = "fade",   enabled = true, speed = 2, bezier = "calm" })
+hl.animation({ leaf = "layers", enabled = true, speed = 2, bezier = "calm", style = "fade" })
+
+-- Off entirely
+hl.animation({ leaf = "border",      enabled = false })
+hl.animation({ leaf = "borderangle", enabled = false })
+
+
+
+
 ---------------------
 ---- KEYBINDINGS ----
 ---------------------
