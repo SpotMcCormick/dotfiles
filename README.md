@@ -76,7 +76,7 @@ Now go to step 5.
 Install everything on the package list except the NVIDIA packages:
 
 ```bash
-grep -vi nvidia pkglist.txt | sudo pacman -S --needed -
+grep -viE "nvidia|cuda" pkglist.txt | sudo pacman -S --needed -
 ```
 
 Now go to step 5.
@@ -117,13 +117,13 @@ cp flatpak/overrides/* ~/.local/share/flatpak/overrides/
 Remove any default configs the fresh install created. Stow won't link over them:
 
 ```bash
-rm -rf ~/.config/{hypr,kitty,rofi,waybar,yazi,nvim,nwg-look,nwg-displays,harlequin}
+rm -rf ~/.config/{hypr,kitty,rofi,waybar,yazi,nvim,nwg-look,nwg-displays,harlequin,gtk-3.0,gtk-4.0}
 ```
 
 Stow creates symlinks in `~/.config` that point back into `~/dotfiles`, so edits in either place stay in sync:
 
 ```bash
-stow hypr kitty rofi waybar yazi nvim nwg-look nwg-displays harlequin
+stow hypr kitty rofi waybar yazi nvim nwg-look nwg-displays harlequin gtk
 ```
 
 ## 7. Install the scripts and database settings
@@ -179,6 +179,14 @@ sudo systemctl enable sddm
 
 ```bash
 reboot
+```
+
+## 10. After you log in
+
+Restore the GTK theme settings (dark mode, icons, font). These are stored in a database, not a file, so stow can't carry them. Run this from a terminal inside Hyprland:
+
+```bash
+bash ~/dotfiles/gtk/restore-gsettings.sh
 ```
 
 If Hyprland complains about `monitors.lua`, open `nwg-displays` and click Apply.
