@@ -203,13 +203,68 @@ Load it in the current terminal:
 source ~/.bashrc
 ```
 
-## 10. Reboot
+## 10. SharedHome network drive
+
+This mounts your home server's share at `~/SharedHome`. It needs Tailscale signed in to the same account as the server:
+
+```bash
+sudo pacman -S --needed cifs-utils tailscale
+sudo systemctl enable --now tailscaled
+sudo tailscale up
+```
+
+Create the login file for the share. It holds a password, so only root can read it:
+
+```bash
+sudo mkdir -p /etc/samba
+sudo nano /etc/samba/credentials
+```
+
+Put these three lines in it with your own username and password:
+
+```
+username=YOUR_USER
+password=YOUR_PASSWORD
+domain=WORKGROUP
+```
+
+```bash
+sudo chmod 600 /etc/samba/credentials
+mkdir ~/SharedHome
+```
+
+Open `/etc/fstab` and add this line at the bottom. Replace `SERVER_IP` with the server's Tailscale address:
+
+```bash
+sudo nano /etc/fstab
+```
+
+```
+//SERVER_IP/sharedhome  /home/spotmccormick/SharedHome  cifs  credentials=/etc/samba/credentials,uid=1000,gid=1000,iocharset=utf8,_netdev,nofail,x-systemd.automount,x-systemd.idle-timeout=60,x-systemd.requires=tailscaled.service  0  0
+```
+
+Start the mount:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl start home-spotmccormick-SharedHome.automount
+```
+
+Check it:
+
+```bash
+ls ~/SharedHome
+```
+
+It mounts the first time you open the folder, and unmounts after 60 idle seconds.
+
+## 11. Reboot
 
 ```bash
 reboot
 ```
 
-## 11. After you log in
+## 12. After you log in
 
 Set the dark theme, icons and font. Run these in a terminal inside Hyprland. They are stored in a database, not a file, so stow can't carry them:
 
