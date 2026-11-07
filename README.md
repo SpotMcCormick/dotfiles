@@ -175,13 +175,41 @@ sudo cp /usr/share/backgrounds/archlinux/split.png /usr/share/sddm/themes/silent
 sudo systemctl enable sddm
 ```
 
-## 9. Reboot
+## 9. Home folders and terminal prompt
+
+Create the standard folders:
+
+```bash
+mkdir -p ~/Documents ~/Downloads ~/Music ~/Pictures ~/Videos
+```
+
+Create your own folders. Screenshots (the Print key) go in Pictures, and screen recordings go in Videos:
+
+```bash
+mkdir -p ~/Pictures/Screenshots ~/Videos/Screenrecordings ~/dev-sandbox ~/tools
+```
+
+Set the terminal prompt: blue `[user@host folder]` and a purple `$`. Kitty adds its own shell integration codes by itself:
+
+```bash
+cat >> ~/.bashrc <<'EOF'
+PS1='\[\e[38;5;75m\][\u@\h \W]\[\e[38;5;141m\]\$\[\e[0m\] '
+EOF
+```
+
+Load it in the current terminal:
+
+```bash
+source ~/.bashrc
+```
+
+## 10. Reboot
 
 ```bash
 reboot
 ```
 
-## 10. After you log in
+## 11. After you log in
 
 Set the dark theme, icons and font. Run these in a terminal inside Hyprland. They are stored in a database, not a file, so stow can't carry them:
 
@@ -193,3 +221,19 @@ gsettings set org.gnome.desktop.interface font-name 'JetBrainsMono Nerd Font 11'
 ```
 
 If Hyprland complains about `monitors.lua`, open `nwg-displays` and click Apply.
+
+## If an IP address shows up in Thunar's sidebar
+
+Thunar saves anything you open through `smb://` as a sidebar bookmark, and that bookmark contains the server's IP. Open the share through `~/SharedHome` instead. To remove an entry that already showed up, delete the bookmark line:
+
+```bash
+sed -i '/smb:\/\//d' ~/.config/gtk-3.0/bookmarks
+```
+
+If it is listed as a mounted network drive instead of a bookmark, unmount it (replace `SERVER_IP` with your server's address):
+
+```bash
+gio mount -u smb://SERVER_IP/sharedhome
+```
+
+The bookmarks file is listed in `.gitignore`, so it is never committed.
