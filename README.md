@@ -183,10 +183,13 @@ reboot
 
 ## 10. After you log in
 
-Restore the GTK theme settings (dark mode, icons, font). These are stored in a database, not a file, so stow can't carry them. Run this from a terminal inside Hyprland:
+Set the dark theme, icons and font. Run these in a terminal inside Hyprland. They are stored in a database, not a file, so stow can't carry them:
 
 ```bash
-bash ~/dotfiles/gtk/restore-gsettings.sh
+gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
+gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark'
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface font-name 'JetBrainsMono Nerd Font 11'
 ```
 
 If Hyprland complains about `monitors.lua`, open `nwg-displays` and click Apply.
