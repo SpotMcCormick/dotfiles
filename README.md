@@ -117,13 +117,13 @@ cp flatpak/overrides/* ~/.local/share/flatpak/overrides/
 Remove any default configs the fresh install created. Stow won't link over them:
 
 ```bash
-rm -rf ~/.config/{hypr,kitty,rofi,waybar,yazi,nvim,nwg-look,nwg-displays,harlequin,gtk-3.0,gtk-4.0}
+rm -rf ~/.config/{hypr,kitty,rofi,waybar,yazi,nvim,nwg-look,nwg-displays,harlequin,gtk-3.0,gtk-4.0,wlogout}
 ```
 
 Stow creates symlinks in `~/.config` that point back into `~/dotfiles`, so edits in either place stay in sync:
 
 ```bash
-stow hypr kitty rofi waybar yazi nvim nwg-look nwg-displays harlequin gtk
+stow hypr kitty rofi waybar yazi nvim nwg-look nwg-displays harlequin gtk wlogout
 ```
 
 ## 7. Install the scripts and database settings
