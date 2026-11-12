@@ -1,6 +1,4 @@
 bibata-cursor-theme-bin
-blueferry-backend
-blueferry-gtk
 brave-bin
 clickhouse-client-bin
 displaylink
@@ -8,5 +6,6 @@ python-clickhouse-connect
 sddm-silent-theme
 sddm-theme-tokyo-night-git
 sqlit
+tether-bin
 wlogout
 yay
