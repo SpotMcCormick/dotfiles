@@ -1,0 +1,39 @@
+#firmware updates. Makes sure do this for the dock 
+fwupdmgr get-devices
+fwupdmgr get-updates
+sudo fwupdmgr update
+
+# system updates (official repos + AUR)
+yay -Syu
+
+# Flatpak updates
+flatpak update -y
+flatpak uninstall --unused -y
+
+#updating packlist 
+pacman -Qqen > ~/dotfiles/pkglist.txt
+pacman -Qqem | grep -v -- '-debug$' > ~/dotfiles/aurlist.txt
+flatpak list --app --columns=application > ~/dotfiles/flatpaklist.txt
+
+# SDDM
+mkdir -p ~/dotfiles/sddm
+sudo cp /etc/sddm.conf ~/dotfiles/sddm/
+sudo cp /usr/share/sddm/themes/silent/configs/default.conf \
+    ~/dotfiles/sddm/silent-default.conf
+sudo chown -R "$USER:$USER" ~/dotfiles/sddm
+
+#push to git 
+cd ~/dotfiles
+# stop if a Tailscale IP (100.64.x.x - 100.127.x.x) slipped into the repo
+if grep -rIqE '100\.(6[4-9]|[7-9][0-9]|1[01][0-9]|12[0-7])\.[0-9]+\.[0-9]+' . --exclude-dir=.git; then
+    echo "IP address found in dotfiles. Fix it before pushing:"
+    grep -rInE '100\.(6[4-9]|[7-9][0-9]|1[01][0-9]|12[0-7])\.[0-9]+\.[0-9]+' . --exclude-dir=.git
+    exit 1
+fi
+git status
+git add .
+git commit -m "weekly arch update" || true
+git push
+
+#reboot 
+sudo reboot
