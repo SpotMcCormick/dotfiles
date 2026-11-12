@@ -1,73 +1,81 @@
 * {
-    base00: #263238;
-    base01: #2E3C43;
-    base03: #546E7A;
-    base07: #FFFFFF;
-    base0D: #82AAFF;
+    bg:       #1a1b26F2;
+    bg-alt:   #292e42;
+    bg-sel:   #7aa2f7;
+    fg:       #c0caf5;
+    fg-dim:   #565f89;
+    fg-sel:   #1a1b26;
+    accent:   #7aa2f7;
+    border:   #414868;
 
     spacing: 0;
     background-color: transparent;
+    text-color: @fg;
 }
 
 window {
     transparency: "real";
-    background-color: #263238BB;
-    border-radius: 14px;
-    width: 55%;
-
     location: center;
     anchor: center;
-    x-offset: 0;
-    y-offset: 0;
+    width: 640px;
+    background-color: @bg;
+    border: 2px;
+    border-color: @accent;
+    border-radius: 10px;
 }
+
 mainbox {
     children: [inputbar, listview];
-    spacing: 14px;
-    padding: 18px;
-    border: 1px;
-    border-color: #FFFFFF22;
+    spacing: 8px;
+    padding: 10px;
 }
 
 inputbar {
-    padding: 10px 14px;
-    background-color: #FFFFFF10;
-    border-radius: 10px;
     children: [prompt, entry];
-}
-
-prompt {
-    text-color: @base0D;
-    str: "run";
-    margin: 0 10px 0 0;
-}
-
-entry {
-    text-color: @base07;
-}
-
-listview {
-    lines: 8;
-    scrollbar: false;
-    margin: 0;
-}
-
-element {
-    padding: 8px 10px;
-    spacing: 8px;
-    border-radius: 10px;
-    children: [element-icon, element-text];
-}
-
-element normal {
+    padding: 4px 8px;
     background-color: transparent;
 }
 
-element selected {
-    background-color: #FFFFFF18;
+prompt {
+    str: ">";
+    text-color: @accent;
+    margin: 0 8px 0 0;
 }
 
-element-text,
+entry {
+    text-color: @fg;
+    placeholder: "";
+    placeholder-color: @fg-dim;
+}
+
+listview {
+    lines: 12;
+    scrollbar: false;
+    fixed-height: true;
+}
+
+element {
+    padding: 6px 8px;
+    spacing: 10px;
+    border-radius: 6px;
+    children: [element-icon, element-text];
+}
+
+element selected {
+    background-color: @bg-sel;
+}
+
 element-icon {
+    size: 1.4em;
     background-color: inherit;
-    text-color: @base07;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+    vertical-align: 0.5;
+}
+
+element selected element-text {
+    text-color: @fg-sel;
 }
