@@ -1,12 +1,8 @@
 bibata-cursor-theme-bin
 brave-bin
 clickhouse-client-bin
-clickhouse-common-static-bin
 displaylink
-evdi-dkms
 python-clickhouse-connect
-python-textual-fastdatatable
-redhat-fonts
 sddm-silent-theme
 sddm-theme-tokyo-night-git
 sqlit
